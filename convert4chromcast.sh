@@ -109,7 +109,7 @@ process_file() {
                 echo "- file should be playable by Chromecast!"
 	else
 		echo "- start convertion"
-		$FFMPEG -loglevel error -stats -i "$FILENAME" -map 0 -scodec copy -vcodec $OUTPUT_VCODEC -acodec $OUTPUT_ACODEC -f $OUTPUT_GFORMAT "$FILENAME.chromcast.$EXTENSION" && on_success "$FILENAME"  || on_failure "$FILENAME.chromcast.$EXTENSION" 
+		$FFMPEG -loglevel error -stats -i "$FILENAME" -map 0 -scodec copy -vcodec $OUTPUT_VCODEC -acodec $OUTPUT_ACODEC -f $OUTPUT_GFORMAT "$FILENAME.chromecast.$EXTENSION" && on_success "$FILENAME"  || on_failure "$FILENAME.chromcast.$EXTENSION" 
 		
         fi
 }
