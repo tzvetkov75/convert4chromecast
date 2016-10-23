@@ -12,7 +12,7 @@ set -u
 ##########
 SUPPORTED_EXTENSIONS=('mkv' 'avi' 'mp4' '3gp' 'mov' 'mpg' 'mpeg' 'qt' 'wmv' 'm2ts' 'flv')
 
-SUPPORTED_GFORMATS=('MPEG-4' 'Matroska')
+SUPPORTED_GFORMATS=('mov' 'Matroska')
 SUPPORTED_VCODECS=('MPEG-4 AVC')
 SUPPORTED_ACODECS=('AAC' 'MP3' 'Vorbis' 'Ogg')
 
@@ -22,6 +22,7 @@ DEFAULT_VCODEC="h264 -crf 18"
 # default audio encoding and params
 DEFAULT_ACODEC="libmp3lame -q:a 2"
 DEFAULT_GFORMAT="matroska"
+DEFAULT_EXTENSION="mkv"
 
 #############
 # FUNCTIONS #
@@ -75,11 +76,13 @@ process_file() {
 
 	# general format
         INPUT_GFORMAT=`ffprobe -show_entries format=format_name -of default=noprint_wrappers=1:nokey=1 -hide_banner -v error "$FILENAME"`
-	if in_array ${INPUT_GFORMAT%,*} "${SUPPORTED_GFORMATS[@]}"; then 
-                OUTPUT_GFORMAT=${INPUT_GFORMAT%,*} 
+	if in_array ${INPUT_GFORMAT%%,*} "${SUPPORTED_GFORMATS[@]}"; then 
+                OUTPUT_GFORMAT=${INPUT_GFORMAT%%,*} 
+		OUTPUT_EXTENSION=$EXTENSION
         else
                 # if override format is specified, use it; otherwise fall back to default format
                 OUTPUT_GFORMAT="${OVERRIDE_GFORMAT:-$DEFAULT_GFORMAT}"
+		OUTPUT_EXTENSION=$DEFAULT_EXTENSION
 		playable="false" 
 
         fi
@@ -109,7 +112,7 @@ process_file() {
                 echo "- file should be playable by Chromecast!"
 	else
 		echo "- start convertion"
-		$FFMPEG -loglevel error -stats -i "$FILENAME" -map 0 -scodec copy -vcodec $OUTPUT_VCODEC -acodec $OUTPUT_ACODEC -f $OUTPUT_GFORMAT "$FILENAME.chromecast.$EXTENSION" && on_success "$FILENAME"  || on_failure "$FILENAME.chromcast.$EXTENSION" 
+		$FFMPEG -loglevel error -stats -i "$FILENAME" -map 0 -scodec copy -vcodec $OUTPUT_VCODEC -acodec $OUTPUT_ACODEC -f $OUTPUT_GFORMAT "$FILENAME.chromecast.$OUTPUT_EXTENSION" && on_success "$FILENAME"  || on_failure "$FILENAME.chromecast.$OUTPUT_EXTENSION" 
 		
         fi
 }
