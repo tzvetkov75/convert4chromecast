@@ -62,6 +62,7 @@ on_failure() {
 
 
 process_file() {
+	 FILENAME="$1" 
 	echo "----------------------"
         echo "Processing: $FILENAME"
 	playable="true" 
@@ -81,7 +82,7 @@ process_file() {
 		OUTPUT_EXTENSION=$EXTENSION
         else
                 # if override format is specified, use it; otherwise fall back to default format
-                OUTPUT_GFORMAT="${OVERRIDE_GFORMAT:-$DEFAULT_GFORMAT}"
+                OUTPUT_GFORMAT="$DEFAULT_GFORMAT"
 		OUTPUT_EXTENSION=$DEFAULT_EXTENSION
 		playable="false" 
 
@@ -139,10 +140,11 @@ for FILENAME in "$@"; do
 	if ! [ -e "$FILENAME" ]; then
 		echo "$FILENAME file not found, skipping..."
 	elif [ -d "$FILENAME" ]; then
+		echo "Found directory $FILENAME"
 		for F in $(find "$FILENAME" -type f); do
-			process_file $F
+			process_file "$F"
 		done
 	elif [ -f "$FILENAME" ]; then
-		process_file $FILENAME
+		process_file "$FILENAME"
 	fi
 done
