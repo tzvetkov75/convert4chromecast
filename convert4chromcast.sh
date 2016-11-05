@@ -131,7 +131,7 @@ fi
 
 # if no argument then print help
 if [ $# -lt 1 ]; then
-	echo "provide file(s) or directory to ibe converted if needed, so they will be playable on chromecast 1/2"  	
+	echo "provide file(s) or directory to be converted in playable on chromecast format (1 or 2)"  	
 	 echo "Usage: convert4chromecast.sh <videofile|directory> [ videofile|directory ... ]" 
 	 exit 1
 fi
