@@ -20,7 +20,8 @@ SUPPORTED_ACODECS=('AAC' 'MP3' 'Vorbis' 'Ogg')
 DEFAULT_VCODEC="h264 -crf 18"
 
 # default audio encoding and params
-DEFAULT_ACODEC="libmp3lame -q:a 2"
+DEFAULT_ACODEC="acc -q:a 2"
+
 DEFAULT_GFORMAT="matroska"
 DEFAULT_EXTENSION="mkv"
 
@@ -110,10 +111,10 @@ process_file() {
         echo "- audio: $INPUT_ACODEC ----> $OUTPUT_ACODEC"
 	
 	if [ $playable == "true" ]; then
-                echo "- file should be playable by Chromecast!"
+                echo "- file can be played on Chromecast already!"
 	else
 		echo "- start convertion"
-		$FFMPEG -loglevel error -stats -i "$FILENAME" -map 0 -scodec copy -vcodec $OUTPUT_VCODEC -acodec $OUTPUT_ACODEC -f $OUTPUT_GFORMAT "$FILENAME.chromecast.$OUTPUT_EXTENSION" && on_success "$FILENAME"  || on_failure "$FILENAME.chromecast.$OUTPUT_EXTENSION" 
+		$FFMPEG -loglevel error -stats -i "$FILENAME" -map 0 -scodec copy -vcodec $OUTPUT_VCODEC -acodec $OUTPUT_ACODEC -f $OUTPUT_GFORMAT -strict -2 "$FILENAME.chromecast.$OUTPUT_EXTENSION" && on_success "$FILENAME"  || on_failure "$FILENAME.chromecast.$OUTPUT_EXTENSION" 
 		
         fi
 }
