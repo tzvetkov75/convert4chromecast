@@ -20,7 +20,7 @@ SUPPORTED_ACODECS=('AAC' 'MP3' 'Vorbis' 'Ogg')
 DEFAULT_VCODEC="h264 -crf 18"
 
 # default audio encoding and params
-DEFAULT_ACODEC="acc -q:a 2"
+DEFAULT_ACODEC="aac -q:a 2"
 
 DEFAULT_GFORMAT="matroska"
 DEFAULT_EXTENSION="mkv"
